@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
                         decoration: InputDecoration(
                           isDense: true,
                           prefixIcon: const Icon(Icons.search),
-                          hintText: "Search Something",
+                          hintText: "Search Something ",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30)
                           )
