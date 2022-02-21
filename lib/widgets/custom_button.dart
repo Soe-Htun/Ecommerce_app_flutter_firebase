@@ -5,13 +5,15 @@ class CustomButton extends StatelessWidget {
   final Color color;
   final Color textColor;
   final FontWeight fontWeight;
+  final double fontSize;
   final Function() onPress;
   const CustomButton({ Key? key,
     required this.text,
     required this.onPress,
     this.color = Colors.grey,
     this.textColor = Colors.black,
-    this.fontWeight = FontWeight.normal
+    this.fontWeight = FontWeight.normal,
+    this.fontSize = 16
   }) : super(key: key);
 
   @override
@@ -28,7 +30,8 @@ class CustomButton extends StatelessWidget {
           child: Text(text,
           style: TextStyle(
             color: textColor,
-            fontWeight: fontWeight
+            fontWeight: fontWeight,
+            fontSize: fontSize
           ),
           )
       ),

@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:flutter/material.dart';
 class AlreadyHaveAccount extends StatelessWidget {
   final bool login;
@@ -14,14 +15,18 @@ class AlreadyHaveAccount extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          login ? "Don't have an account ?" : "Already have an account ?"
+          login ? "Don't have an account ?" : "Already have an account ?",
+          style: const TextStyle(
+            fontSize: 15
+          ),
         ),
         GestureDetector(
           onTap: press,
           child: Text(
             login ? " Sign Up" : " Sign In",
             style: const TextStyle(
-              color: Colors.blue,
+              color: kPrimaryColor,
+              fontSize: 17,
               fontWeight: FontWeight.bold
             ),
           ),

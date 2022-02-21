@@ -1,5 +1,7 @@
+import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/homepage.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/signup.dart';
+import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/already_account.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_text_field.dart';
@@ -25,13 +27,17 @@ class _LoginState extends State<Login> {
     String? _password;
     final auth = FirebaseAuth.instance;
     Widget build(BuildContext context) {
-    void validation() {
+    void validation() async {
       final FormState? _form = _loginFormKey.currentState;
       if(_form!.validate()) {
         try {
-          auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
-          Get.to(HomePage());
-        } on PlatformException catch (e) {
+          UserCredential user =await auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
+          // Get.to(HomePage());
+          print('User ==> ${user}'); 
+          Get.to(HomeScreen());
+          
+          
+        } on FirebaseAuthException catch (e) {
           // TODO
           // Get.snackbar(
           //   "Message",
@@ -98,6 +104,8 @@ class _LoginState extends State<Login> {
                       },
                     ),
                     CustomButton(
+                      color: kPrimaryColor,
+                      textColor: kTextColor,
                       text: 'Login', 
                       onPress: () {
                        validation();

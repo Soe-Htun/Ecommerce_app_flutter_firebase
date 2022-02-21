@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/login.dart';
+import 'package:ecommerce_app_flutter_firebase/services/firebaseService.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/already_account.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_text_field.dart';
@@ -20,7 +23,9 @@ class _SignUpState extends State<SignUp> {
   RegExp regExp = RegExp(valid);
   bool obscureText = true;
   String? _email;
-  String? _password;
+  String? phoneNumber;
+  bool isMale = true;
+  String? _password, userName;
   final auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -29,9 +34,20 @@ class _SignUpState extends State<SignUp> {
     final FormState? _form = _formKey.currentState;
     if(!_form!.validate()) {
       try {
-        auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
-        Get.to(const Login());
-      } on PlatformException catch (e) {
+        UserCredential result = await auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
+        // Get.to( HomeScreen());
+        // FirebaseFirestore.instance.collection("Users").doc(result.user?.uid).set({
+        //   "UserName": userName,
+        //   "UserId": result.user?.uid,
+        //   "UserEmail": _email,
+        //   "UserGender": isMale? "Male": "Female",
+        //   "Phone Number": phoneNumber
+        // });
+        User? updateUser = FirebaseAuth.instance.currentUser;
+        updateUser?.updateProfile(displayName: userName);
+        userSetup(userName!);
+        debugPrint('Hello ${result.user?.uid}');
+      } on FirebaseAuthException catch (e) {
         // _scaffoldKey.currentState.
         Get.snackbar(
           "Message",
@@ -53,7 +69,7 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             children: [
               Container(
-                height: 200,
+                height: 150,
                 width: double.infinity,
                 // color: Colors.blue,
                 child: Column(
@@ -88,7 +104,9 @@ class _SignUpState extends State<SignUp> {
                         }
                         return "";
                       },
-                      onChanged: (value){},
+                      onChanged: (value){
+                        value = userName;
+                      },
                     ),
                     CustomTextField(
                       text: 'Email', 
@@ -103,7 +121,6 @@ class _SignUpState extends State<SignUp> {
                         setState(() {
                           _email = value;
                         });
-                        print(_email);
                       },
                     ),
                     PasswordField(
@@ -120,8 +137,35 @@ class _SignUpState extends State<SignUp> {
                         setState(() {
                           _password = value;
                         });
-                        print(_password);
                       },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isMale = !isMale;
+                        });
+                      },
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(left: 10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey)
+                        ),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                isMale? "Male": "Female",
+                                style: const TextStyle(
+                                  color: kBackgroundColor,
+                                  fontSize: 18
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                     CustomTextField(
                       keyboardType: TextInputType.phone,
@@ -134,10 +178,16 @@ class _SignUpState extends State<SignUp> {
                         } 
                         return "";
                       },
-                      onChanged: (value){}, 
+                      onChanged: (value){
+                        setState(() {
+                          phoneNumber = value;
+                        });
+                      }, 
                     ),
         
                     CustomButton(
+                      color: kPrimaryColor,
+                      textColor: kTextColor,
                       text: 'Register', 
                       onPress: () {
                         validation();
