@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/detailscreen.dart';
 import 'package:ecommerce_app_flutter_firebase/ProductList/listproduct.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/singleproduct.dart';
@@ -28,7 +27,7 @@ class FeatureBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           height: 40,
           child: Row(

@@ -1,10 +1,13 @@
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
+import 'package:ecommerce_app_flutter_firebase/controller/usercontroller.dart';
+import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/notification_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({ Key? key }) : super(key: key);
+  const ProfileScreen({ Key? key }) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -51,10 +54,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool edit = false;
+  final UserController userController = Get.put(UserController());
+
+  Widget _buildContainerPart() {
+    return Column(
+      children: userController.getUserModelList.map((e) {
+        return SizedBox(
+          height: 260,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildSingleContainer(
+                  startText: 'Name',
+                  endText: e.userName
+                ),
+                _buildSingleContainer(
+                  startText: 'Email',
+                  endText: e.userEmail
+                ),
+                _buildSingleContainer(
+                  startText: 'Gender',
+                  endText: e.userGender
+                ),
+                _buildSingleContainer(
+                  startText: 'Phone No',
+                  endText: e.userPhoneNumber
+                ),
+            ],
+          ),
+        );
+      }).toList()
+    );
+  }
+
+  Widget _buildTextFormFieldPart() {
+    return Column(
+      children: userController.getUserModelList.map((e) {
+        return SizedBox(
+          height: 260,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildSingleTextFormField(
+                name: e.userName
+              ),
+              _buildSingleTextFormField(
+                name: e.userEmail
+              ),
+              _buildSingleTextFormField(
+                name: e.userGender
+              ),
+              _buildSingleTextFormField(
+                name: e.userPhoneNumber
+              ),
+            ],
+          ),
+        );
+      }).toList()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xfff8f8ff),
       appBar: AppBar(
         // elevation: 0,
@@ -68,7 +131,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }, 
           color: Colors.redAccent,
           icon: const Icon(Icons.close)
-        ) : Container(),
+        ) 
+        : IconButton(
+          onPressed: (){
+            setState(() {
+              Get.to(const HomeScreen());
+            });
+          }, 
+          color: Colors.black,
+          icon: const Icon(Icons.arrow_back)
+        ),
         actions: [
           edit == false? NotificationButton()
           :
@@ -92,8 +164,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Container(
-                  height: 250,
+                SizedBox(
+                  height: 200,
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 edit == true? Positioned(
                   left: MediaQuery.of(context).size.width * 0.52,
-                  top: 140,
+                  top: MediaQuery.of(context).size.height * 0.17,
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)
@@ -130,46 +202,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container()
               ],
             ),
-            Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 300,
-                    child: edit== true? Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildSingleTextFormField(name: 'Enter name'),
-                        _buildSingleTextFormField(name: 'Enter gmail'),
-                        _buildSingleTextFormField(name: 'Enter gender'),
-                        _buildSingleTextFormField(name: 'Enter Phone Number'),
-                      ],
-                    ) :
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildSingleContainer(
-                          startText: 'Name',
-                          endText: 'Soe'
-                        ),
-                        _buildSingleContainer(
-                          startText: 'Email',
-                          endText: 'soe@gmail.com'
-                        ),
-                        _buildSingleContainer(
-                          startText: 'Gender',
-                          endText: 'Male'
-                        ),
-                        _buildSingleContainer(
-                          startText: 'Phone No',
-                          endText: '09265094170'
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 260,
+              child: edit== true? 
+                _buildTextFormFieldPart()
+                :  
+                _buildContainerPart()
             ),
             Expanded(child: Container()),
             edit == false ? CustomButton(

@@ -1,10 +1,13 @@
 import 'package:ecommerce_app_flutter_firebase/model/cartmodel.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
   List<CartModel> cartModelList = [];
   late CartModel cartModel;
+
+  List<CartModel> checkOutModelList = [];
+  CartModel? checkOutModel;
+  late List<CartModel> myCheckOut;
 
   void getCartData({
     required String name,
@@ -29,4 +32,18 @@ class CartController extends GetxController {
   //  get getCardModelListLength async {
   //   return cartModelList.length;
   // }
+
+  void getCheckOutData({
+    required int quantity,
+    required double price,
+    required String name,
+    required String image
+  }) {
+    checkOutModel = CartModel(
+      name: name, 
+      image: image, 
+      price: price, 
+      quantity: quantity.toDouble()
+    );
+  }
 }

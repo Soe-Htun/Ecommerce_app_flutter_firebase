@@ -17,7 +17,7 @@ class SingleProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      child: Container(
+      child: SizedBox(
         height: 220,
         width: MediaQuery.of(context).size.width / 2.3,
         child: Column(

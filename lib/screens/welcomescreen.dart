@@ -37,7 +37,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
 
-              Container(
+              SizedBox(
                 height: 80,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

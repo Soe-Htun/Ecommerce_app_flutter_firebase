@@ -1,9 +1,7 @@
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:ecommerce_app_flutter_firebase/controller/cartcontroller.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/cartscreen.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/homepage.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
-import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/notification_button.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +78,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _buildNameToDescriptionPart() {
-    return Container(
+    return SizedBox(
       height: 100,
       child: Row(
         children: [
@@ -107,7 +105,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
   
   Widget _buildDescription() {
-    return Container(
+    return SizedBox(
       height: 160,
       child: Wrap(
         children: const [
@@ -127,7 +125,7 @@ class _DetailScreenState extends State<DetailScreen> {
           style: myStyle,
         ),
         const SizedBox(height: 15,),
-        Container(
+        SizedBox(
           width: 265,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -152,7 +150,7 @@ class _DetailScreenState extends State<DetailScreen> {
           style: myStyle,
         ),
         const SizedBox(height: 15,),
-        Container(
+        SizedBox(
           width: 265,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -258,7 +256,7 @@ class _DetailScreenState extends State<DetailScreen> {
         title: const Text('Details', style: TextStyle(color: kBackgroundColor),),
         leading: CustomIconButton(
           onPress: (){
-            Get.to( HomeScreen());
+            Get.to( const HomeScreen());
           }, 
           icon: Icons.arrow_back
         ),
@@ -268,47 +266,45 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
       body: ListView(
         children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Container(
-                //   width: MediaQuery.of(context).size.width / 1.2,
-                //   height: 230,
-                //   child: Card(
-                //     child: Padding(
-                //       padding: const EdgeInsets.symmetric(horizontal: 45),
-                //       child: Container(
-                //         height: 230,
-                //         decoration: BoxDecoration(
-                //           image: DecorationImage(
-                //             fit: BoxFit.fill,
-                //             image: AssetImage("assets/images/${widget.image}")
-                //           )
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Container(
+              //   width: MediaQuery.of(context).size.width / 1.2,
+              //   height: 230,
+              //   child: Card(
+              //     child: Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 45),
+              //       child: Container(
+              //         height: 230,
+              //         decoration: BoxDecoration(
+              //           image: DecorationImage(
+              //             fit: BoxFit.fill,
+              //             image: AssetImage("assets/images/${widget.image}")
+              //           )
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
-                _buildImage(),
+              _buildImage(),
 
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildNameToDescriptionPart(),
-                      _buildDescription(),
-                      _buildSizePart(),
-                      _buildColorPart(),
-                      _buildQuantityPart(),
-                      _buildButtonPart()
-                    ],
-                  ),
-                )
-              ],
-            ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildNameToDescriptionPart(),
+                    _buildDescription(),
+                    _buildSizePart(),
+                    _buildColorPart(),
+                    _buildQuantityPart(),
+                    _buildButtonPart()
+                  ],
+                ),
+              )
+            ],
           ),
         ],
       ),

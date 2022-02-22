@@ -1,19 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
-import 'package:ecommerce_app_flutter_firebase/model/product.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/detailscreen.dart';
-import 'package:ecommerce_app_flutter_firebase/ProductList/listproduct.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/featureList.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/newAchives.dart';
-import 'package:ecommerce_app_flutter_firebase/widgets/singleproduct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({ Key? key }) : super(key: key);
+  const HomePage({ Key? key }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -37,15 +32,13 @@ class _HomePageState extends State<HomePage> {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  var  mySnapshot;
-
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   Widget _buildCategoryProduct({String? image, int? color}) {
     return CircleAvatar(
       maxRadius: 33,
       backgroundColor: Color(color!),
-      child: Container(
+      child: SizedBox(
         height: 35,
         child: Image(
           image: AssetImage("assets/images/$image")
@@ -132,7 +125,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildImageSlider() {
-    return Container(
+    return SizedBox(
       height: 220,
       child: CarouselSlider(
         items: [
@@ -158,7 +151,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategory() {
     return Column(
       children: [
-        Container(
+        SizedBox(
             height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +170,7 @@ class _HomePageState extends State<HomePage> {
               ]
             ),
           ),
-          Container(
+          SizedBox(
             height: 60,
             child: Row(
               children: [
@@ -279,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                 // )
                 
                 child: SingleChildScrollView(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: Column(
                       children: [

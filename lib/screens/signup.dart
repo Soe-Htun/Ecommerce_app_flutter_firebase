@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/login.dart';
-import 'package:ecommerce_app_flutter_firebase/services/firebaseService.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/already_account.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_text_field.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/password_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class SignUp extends StatefulWidget {
@@ -22,10 +20,11 @@ class _SignUpState extends State<SignUp> {
   static String valid = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
   RegExp regExp = RegExp(valid);
   bool obscureText = true;
-  String? _email;
+  String? email;
   String? phoneNumber;
   bool isMale = true;
-  String? _password, userName;
+  String? password;
+  String? userName;
   final auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,19 +33,21 @@ class _SignUpState extends State<SignUp> {
     final FormState? _form = _formKey.currentState;
     if(!_form!.validate()) {
       try {
-        UserCredential result = await auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
+        UserCredential result = await auth.createUserWithEmailAndPassword(email: email!.trim(), password: password!.trim());
         // Get.to( HomeScreen());
-        // FirebaseFirestore.instance.collection("Users").doc(result.user?.uid).set({
-        //   "UserName": userName,
-        //   "UserId": result.user?.uid,
-        //   "UserEmail": _email,
-        //   "UserGender": isMale? "Male": "Female",
-        //   "Phone Number": phoneNumber
-        // });
-        User? updateUser = FirebaseAuth.instance.currentUser;
-        updateUser?.updateProfile(displayName: userName);
-        userSetup(userName!);
-        debugPrint('Hello ${result.user?.uid}');
+        FirebaseFirestore.instance.collection("Users").doc(result.user?.uid).set({
+          "UserName": userName,
+          "UserId": result.user?.uid,
+          "UserEmail": email,
+          "UserGender": isMale? "Male": "Female",
+          "Phone Number": phoneNumber
+        });
+        Get.snackbar(
+          'Success',
+          'Successfully Register',
+          animationDuration: const Duration(microseconds: 3000)
+        );
+        Get.to(const Login());   
       } on FirebaseAuthException catch (e) {
         // _scaffoldKey.currentState.
         Get.snackbar(
@@ -68,7 +69,7 @@ class _SignUpState extends State<SignUp> {
           key: _formKey,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 150,
                 width: double.infinity,
                 // color: Colors.blue,
@@ -90,7 +91,7 @@ class _SignUpState extends State<SignUp> {
               ),
         
               Container(
-                height: 400,
+                height: 420,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
                 child: Column(
@@ -105,7 +106,7 @@ class _SignUpState extends State<SignUp> {
                         return "";
                       },
                       onChanged: (value){
-                        value = userName;
+                        userName = value;
                       },
                     ),
                     CustomTextField(
@@ -119,7 +120,7 @@ class _SignUpState extends State<SignUp> {
                       },
                       onChanged: (value){
                         setState(() {
-                          _email = value;
+                          email = value;
                         });
                       },
                     ),
@@ -135,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                       },
                       onChanged: (value){
                         setState(() {
-                          _password = value;
+                          password = value;
                         });
                       },
                     ),

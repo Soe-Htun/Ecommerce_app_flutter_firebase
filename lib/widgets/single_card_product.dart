@@ -1,5 +1,4 @@
 import 'package:ecommerce_app_flutter_firebase/controller/cartcontroller.dart';
-import 'package:ecommerce_app_flutter_firebase/controller/productControlller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,17 +25,19 @@ class SingleCardProduct extends StatefulWidget {
 
 class _SingleCardProductState extends State<SingleCardProduct> {
 
-  final CartController cartController = Get.put(CartController());
+  static final CartController cartController = Get.put(CartController());
   // cartController.getCheckOutData(
   //   quantity: widget.quantity,
   //   image: widget.image,
   //   name: widget.name,
   //   price: widget.price
-  // )
+  // );
+  
+  
   @override
   Widget build(BuildContext context) {
     // widget.quantity = widget.quantity.toInt();
-    return Container(
+    return SizedBox(
       height: 150,
       width: double.infinity,
       child: Card(
@@ -54,7 +55,7 @@ class _SingleCardProductState extends State<SingleCardProduct> {
                     )
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 130,
                   width: 150,
                   child: ListTile(
@@ -91,12 +92,12 @@ class _SingleCardProductState extends State<SingleCardProduct> {
                                   setState(() {
                                     if(widget.quantity > 1) {
                                       widget.quantity--;
-                                      // cartController.getCheckOutData(
-                                      //   quantity: widget.quantity,
-                                      //   image: widget.image,
-                                      //   name: widget.name,
-                                      //   price: widget.price
-                                      // )
+                                      cartController.getCheckOutData(
+                                        quantity: widget.quantity,
+                                        image: widget.image,
+                                        name: widget.name,
+                                        price: widget.price
+                                      );
                                     }
                                   });
                                 },
@@ -113,12 +114,12 @@ class _SingleCardProductState extends State<SingleCardProduct> {
                                 onTap: (){
                                   setState(() {
                                     widget.quantity++;
-                                      // cartController.getCheckOutData(
-                                      //   quantity: widget.quantity,
-                                      //   image: widget.image,
-                                      //   name: widget.name,
-                                      //   price: widget.price
-                                      // )
+                                      cartController.getCheckOutData(
+                                        quantity: widget.quantity,
+                                        image: widget.image,
+                                        name: widget.name,
+                                        price: widget.price
+                                      );
                                   });
                                 },
                               ),

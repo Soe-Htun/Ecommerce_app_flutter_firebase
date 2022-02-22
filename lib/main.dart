@@ -1,12 +1,5 @@
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/checkout.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/homepage.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/login.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/profilescreen.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/signup.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/welcomescreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +25,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kBackgroundColor, displayColor: kBackgroundColor)
     ),
-      initialRoute: "/",
+      // initialRoute: "/",
       defaultTransition: Transition.rightToLeft,
 
       // home: StreamBuilder(
@@ -46,13 +39,13 @@ class MyApp extends StatelessWidget {
       //   },
       // )
 
-      // home: WelcomeScreen(),
-      getPages: [
-        GetPage(name: "/", page: () => const WelcomeScreen()),
-        GetPage(name: "/login", page: () => const Login()),
-        GetPage(name: "/signUp", page: () => const SignUp()),
-        GetPage(name: "/home", page: () => HomeScreen()),
-      ],
+      home: const WelcomeScreen(),
+      // getPages: [
+      //   GetPage(name: "/", page: () => const WelcomeScreen()),
+      //   GetPage(name: "/login", page: () => const Login()),
+      //   GetPage(name: "/signUp", page: () => const SignUp()),
+      //   GetPage(name: "/home", page: () => HomeScreen()),
+      // ],
     );
   }
 }

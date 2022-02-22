@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../constants.dart';
-import 'homepage.dart';
 
 class CheckOut extends StatefulWidget {
   final double? price;
@@ -73,7 +72,7 @@ class _CheckOutState extends State<CheckOut> {
         elevation: 0,
         leading: CustomIconButton(
           onPress: (){
-            Get.to( HomeScreen());
+            Get.to( const HomeScreen());
           }, 
           icon: Icons.arrow_back
         ),
@@ -103,7 +102,7 @@ class _CheckOutState extends State<CheckOut> {
               ),
             ),
             const SizedBox(height: 15),
-            Container(
+            SizedBox(
               height: 150,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -141,7 +140,7 @@ class _CheckOutState extends State<CheckOut> {
           ),
           child: TextButton(
             onPressed: (){
-              Get.to(HomeScreen());
+              Get.to(const HomeScreen());
             }, 
             child: const Text("Buy",
               style: TextStyle(

@@ -1,12 +1,9 @@
 import 'package:ecommerce_app_flutter_firebase/controller/productControlller.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/homepage.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/singleproduct.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../constants.dart';
 
 class Pant extends StatelessWidget {
   Pant({ Key? key}) : super(key: key);
@@ -21,7 +18,7 @@ class Pant extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: CustomIconButton(
           onPress: () {
-            Get.to(HomeScreen());
+            Get.to(const HomeScreen());
           },
           icon: Icons.arrow_back
         ),
@@ -45,7 +42,7 @@ class Pant extends StatelessWidget {
                 GridView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 2/3.2,

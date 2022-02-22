@@ -1,5 +1,4 @@
 import 'package:ecommerce_app_flutter_firebase/screens/detailscreen.dart';
-import 'package:ecommerce_app_flutter_firebase/ProductList/listproduct.dart';
 import 'package:ecommerce_app_flutter_firebase/ProductList/newAchiveList.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +26,7 @@ class NewAchives extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: 50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

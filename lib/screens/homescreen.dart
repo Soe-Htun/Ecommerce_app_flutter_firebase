@@ -4,6 +4,8 @@ import 'package:ecommerce_app_flutter_firebase/CategoryList/shirt.dart';
 import 'package:ecommerce_app_flutter_firebase/CategoryList/shoes.dart';
 import 'package:ecommerce_app_flutter_firebase/CategoryList/tie.dart';
 import 'package:ecommerce_app_flutter_firebase/controller/productControlller.dart';
+import 'package:ecommerce_app_flutter_firebase/controller/usercontroller.dart';
+import 'package:ecommerce_app_flutter_firebase/screens/profilescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/welcomescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/featureList.dart';
@@ -19,7 +21,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({ Key? key }) : super(key: key);
+  const HomeScreen({ Key? key }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,6 +29,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ProductController productController = Get.put(ProductController());
+  final UserController userController = Get.put(UserController());
 
   List<String> images= [
     "assets/images/shoes.png",
@@ -43,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool contactsColor = false;
 
+  bool profileColor = false;
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -51,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return CircleAvatar(
       maxRadius: 33,
       backgroundColor: Color(color!),
-      child: Container(
+      child: SizedBox(
         height: 35,
         child: Image(
           image: AssetImage("assets/images/$image")
@@ -60,18 +65,42 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildUserAccountsDrawerHeader() {
+    return Column(
+      children: userController.getUserModelList.map((e) {
+        return UserAccountsDrawerHeader(
+            accountName: Text(
+              e.userName
+            ), 
+            currentAccountPicture: const CircleAvatar(
+              backgroundImage: AssetImage("assets/images/user.png"),
+              backgroundColor: Colors.white,
+            ),
+            accountEmail: Text(
+              e.userEmail
+            )
+          );
+      }).toList()
+    );
+  }
+
   Widget _buildMyDrawer() {
     return Drawer(
       child: ListView(
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text("Soe"), 
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/user.png"),
-              backgroundColor: Colors.white,
-            ),
-            accountEmail: Text("soe@gmail.com")
-          ),
+          // UserAccountsDrawerHeader(
+          //   accountName: Text(
+          //     userController.getUserModel!.userName
+          //   ), 
+          //   currentAccountPicture: const CircleAvatar(
+          //     backgroundImage: AssetImage("assets/images/user.png"),
+          //     backgroundColor: Colors.white,
+          //   ),
+          //   accountEmail: Text(
+          //     userController.getUserModel!.userEmail
+          //   )
+          // ),
+          _buildUserAccountsDrawerHeader(),
 
           ListTile(
             selected: homeColor,
@@ -81,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 contactsColor = false;
                 cartColor = false;
                 abloutColor = false;
+                profileColor = false;
               });
             },
             leading: const Icon(Icons.home),
@@ -94,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 homeColor = false;
                 contactsColor = false;
                 abloutColor = false;
+                profileColor = false;
               });
             },
             leading: const Icon(Icons.shopping_cart),
@@ -107,10 +138,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 homeColor = false;
                 contactsColor = false;
                 cartColor = false;
+                profileColor = false;
               });
             },
             leading: const Icon(Icons.info),
             title: const Text("About"),
+          ),
+          ListTile(
+            selected: profileColor,
+            onTap: (){
+              setState(() {
+                profileColor = true;
+                abloutColor = false;
+                homeColor = false;
+                contactsColor = false;
+                cartColor = false;
+              });
+              Get.to( const ProfileScreen());
+            },
+            leading: const Icon(Icons.info),
+            title: const Text("Profile"),
           ),
           ListTile(
             selected: contactsColor,
@@ -119,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 contactsColor = true;
                 homeColor = false;
                 abloutColor = false;
+                profileColor = false;
                 cartColor = false;
               });
             },
@@ -126,8 +174,11 @@ class _HomeScreenState extends State<HomeScreen> {
             title: const Text("Contact Us"),
           ),
           ListTile(
-            onTap: () async {
+            onTap: () async{
               await FirebaseAuth.instance.signOut();
+              if(FirebaseAuth.instance.currentUser == null) {
+                Get.to(const WelcomeScreen());
+              }
             },
             leading: const Icon(Icons.exit_to_app),
             title: const Text("Logout"),
@@ -138,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildImageSlider() {
-    return Container(
+    return SizedBox(
       height: 220,
       child: CarouselSlider(
         items: [
@@ -164,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCategory() {
     return Column(
       children: [
-        Container(
+        SizedBox(
             height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ]
             ),
           ),
-          Container(
+          SizedBox(
             height: 60,
             child: Row(
               children: [
@@ -280,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return StreamBuilder(
                   stream: productController.getAchives(),
                   builder: (context, index) {
-                    return Container(
+                    return SizedBox(
                       width: double.infinity,
                       child: Column(
                         children: [

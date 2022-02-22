@@ -8,8 +8,6 @@ import 'package:ecommerce_app_flutter_firebase/widgets/single_card_product.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'homepage.dart';
-
 class CartScreen extends StatefulWidget {
   // final double price;
   // final String name;
@@ -48,11 +46,11 @@ class _CartScreenState extends State<CartScreen> {
         elevation: 0,
         leading: CustomIconButton(
           onPress: (){
-            Get.to( HomeScreen());
+            Get.to( const HomeScreen());
           }, 
           icon: Icons.arrow_back
         ),
-        actions: [
+        actions: const [
           // CustomIconButton(onPress: (){}, icon: Icons.notifications_none)
         ],
       ),

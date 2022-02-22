@@ -1,5 +1,4 @@
 import 'package:ecommerce_app_flutter_firebase/controller/productControlller.dart';
-import 'package:ecommerce_app_flutter_firebase/screens/homepage.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/singleproduct.dart';
@@ -29,7 +28,7 @@ class NewAchiveList extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: CustomIconButton(
           onPress: () {
-            Get.to(HomeScreen());
+            Get.to(const HomeScreen());
           },
           icon: Icons.arrow_back
         ),
@@ -64,11 +63,11 @@ class NewAchiveList extends StatelessWidget {
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20,),
-                Container(
+                SizedBox(
                   child: GridView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    physics: ScrollPhysics(),
+                    physics: const ScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 200,
                       childAspectRatio: 2/2.8,
