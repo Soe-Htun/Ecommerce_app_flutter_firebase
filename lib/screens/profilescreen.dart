@@ -1,11 +1,15 @@
+import 'dart:io';
 import 'package:ecommerce_app_flutter_firebase/constants.dart';
 import 'package:ecommerce_app_flutter_firebase/controller/usercontroller.dart';
 import 'package:ecommerce_app_flutter_firebase/screens/homescreen.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/custom_icon_button.dart';
 import 'package:ecommerce_app_flutter_firebase/widgets/notification_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({ Key? key }) : super(key: key);
 
@@ -52,9 +56,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  bool edit = false;
-  final UserController userController = Get.put(UserController());
 
   Widget _buildContainerPart() {
     return Column(
@@ -114,6 +115,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  bool edit = false;
+  final UserController userController = Get.put(UserController());
+  File? _pickImage;
+  PickedFile? _image;
+
+  Future<void> getImage({required ImageSource source}) async {
+    _image = await ImagePicker().getImage(source: source);
+    if(_image != null) {
+      _pickImage = File(_image!.path);
+    }
+  }
+
+  String? imageUrl;
+  void _uploadImage({ required File image }) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    Reference storageReference = FirebaseStorage.instance.ref().child("UserImage/${user?.uid}");
+    UploadTask uploadTask = storageReference.putFile(image);
+    TaskSnapshot snapshot = await uploadTask;
+    imageUrl = await snapshot.ref.getDownloadURL();
+  }
+
+  Future<void> myDialogBox() {
+    //  For flutter simple dialog
+
+    // return showDialog<void>(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       content: SingleChildScrollView(
+    //         child: ListBody(
+    //           children: [
+    //             ListTile(
+    //               leading: const Icon(Icons.camera),
+    //               title: const Text("Pick From Camera"),
+    //               onTap: (){},
+    //             ),
+    //             ListTile(
+    //               leading: const Icon(Icons.photo_library),
+    //               title: const Text("Pick From Gallery"),
+    //               onTap: (){},
+    //             )
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   }
+    // );
+
+    // ---> For Getx Dialog
+    return Get.defaultDialog(
+      title: '',
+      barrierDismissible: false,
+      content: ListBody(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.camera_alt),
+            title: const Text("Pick From Camera"),
+            onTap: (){
+              getImage(source: ImageSource.camera);
+              Get.back();
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.photo_library),
+            title: const Text("Pick From Gallery"),
+            onTap: (){
+              getImage(source: ImageSource.gallery);
+              Get.back();
+            },
+          )
+        ],
+      )
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           :
           IconButton(
             onPressed: (){
+              _uploadImage(image: _pickImage!);
               setState(() {
                 edit = false;
               });
@@ -169,18 +246,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children:  [
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         child: CircleAvatar(
                           maxRadius: 65,
-                          backgroundImage: AssetImage("assets/images/user.png"),
+                          backgroundImage: _pickImage== null
+                          ?  const AssetImage("assets/images/users.png") as ImageProvider
+                          : FileImage(_pickImage!)
                         ),
                       )
                     ],
                   ),
                 ),
-                edit == true? Positioned(
+                edit == true? 
+                  Positioned(
                   left: MediaQuery.of(context).size.width * 0.52,
                   top: MediaQuery.of(context).size.height * 0.17,
                   child: Card(
@@ -191,9 +271,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       radius: 20,
                       backgroundColor: Colors.transparent,
                       child: CustomIconButton(
-                        color: kPrimaryColor,
-                        onPress: (){}, 
-                        icon: Icons.edit,
+                        color: kBackgroundColor,
+                        onPress: (){
+                          myDialogBox();
+                        }, 
+                        icon: Icons.camera_alt,
                       ),
                     ),
                   ),

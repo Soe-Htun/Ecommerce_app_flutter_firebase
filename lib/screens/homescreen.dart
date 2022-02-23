@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
               });
               Get.to( const ProfileScreen());
             },
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.people),
             title: const Text("Profile"),
           ),
           ListTile(
@@ -223,14 +223,6 @@ class _HomeScreenState extends State<HomeScreen> {
                  Text("Categories",
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
-                // GestureDetector(
-                //   onTap: (){
-                //     // Get.to(const ListProduct(name: 'Categories', snapShot: ,));
-                //   },
-                //   child: const Text("View more",
-                //     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                //   ),
-                // )
               ]
             ),
           ),

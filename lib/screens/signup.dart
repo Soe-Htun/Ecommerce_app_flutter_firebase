@@ -45,14 +45,16 @@ class _SignUpState extends State<SignUp> {
         Get.snackbar(
           'Success',
           'Successfully Register',
-          animationDuration: const Duration(microseconds: 3000)
+          snackPosition: SnackPosition.BOTTOM,
+          animationDuration: const Duration(microseconds: 2000)
         );
         Get.to(const Login());   
       } on FirebaseAuthException catch (e) {
         // _scaffoldKey.currentState.
         Get.snackbar(
           "Message",
-          e.message.toString()
+          e.message.toString(),
+          snackPosition: SnackPosition.BOTTOM
         );
 
       }

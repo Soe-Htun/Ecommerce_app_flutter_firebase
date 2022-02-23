@@ -29,6 +29,12 @@ class _LoginState extends State<Login> {
       if(_form!.validate()) {
         try {
           await auth.signInWithEmailAndPassword(email: _email!, password: _password!);
+          Get.snackbar(
+          'Success',
+          'Login Successfully',
+          snackPosition: SnackPosition.BOTTOM,
+          animationDuration: const Duration(microseconds: 2000)
+        );
           Get.to(const HomeScreen());
         } on FirebaseAuthException catch (e) {
           Get.snackbar(

@@ -60,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 height: 40,
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 60),
+                padding: const EdgeInsets.symmetric(horizontal: 70),
                 child: CustomButton(
                   color: kPrimaryColor,
                   textColor: kTextColor,
